@@ -1,0 +1,12 @@
+# Go
+apps/api/bin/
+apps/api/*.exe
+
+# Node
+apps/web/node_modules/
+apps/web/.next/
+apps/web/.env*.local
+
+# Environment
+.env
+**/.env
