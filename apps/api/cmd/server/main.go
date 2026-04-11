@@ -6,6 +6,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/hasanwirayuda/schomora/api/internal/auth"
+	"github.com/hasanwirayuda/schomora/api/internal/course"
 	"github.com/hasanwirayuda/schomora/api/internal/models"
 	"github.com/hasanwirayuda/schomora/api/pkg/database"
 	"github.com/hasanwirayuda/schomora/api/pkg/middleware"
@@ -19,8 +20,12 @@ func main() {
 
     database.Connect()
 
-    // Auto migrate dari models package
-    database.DB.AutoMigrate(&models.User{})
+    // Auto migrate semua model
+    database.DB.AutoMigrate(
+        &models.User{},
+        &models.Course{},
+        &models.Module{},
+    )
 
     r := gin.Default()
 
@@ -31,10 +36,19 @@ func main() {
         })
     })
 
+    authMiddleware := middleware.AuthMiddleware()
+
+    // Auth routes
     authRepo := auth.NewRepository(database.DB)
     authService := auth.NewService(authRepo)
     authHandler := auth.NewHandler(authService)
-    auth.RegisterRoutes(r, authHandler, middleware.AuthMiddleware())
+    auth.RegisterRoutes(r, authHandler, authMiddleware)
+
+    // Course routes
+    courseRepo := course.NewRepository(database.DB)
+    courseService := course.NewService(courseRepo)
+    courseHandler := course.NewHandler(courseService)
+    course.RegisterRoutes(r, courseHandler, authMiddleware)
 
     port := os.Getenv("PORT")
     if port == "" {
