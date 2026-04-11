@@ -5,7 +5,10 @@ import (
 	"os"
 
 	"github.com/gin-gonic/gin"
+	"github.com/hasanwirayuda/schomora/api/internal/auth"
+	"github.com/hasanwirayuda/schomora/api/internal/models"
 	"github.com/hasanwirayuda/schomora/api/pkg/database"
+	"github.com/hasanwirayuda/schomora/api/pkg/middleware"
 	"github.com/joho/godotenv"
 )
 
@@ -14,8 +17,10 @@ func main() {
         log.Fatal("Error loading .env file")
     }
 
-    // Connect database
     database.Connect()
+
+    // Auto migrate dari models package
+    database.DB.AutoMigrate(&models.User{})
 
     r := gin.Default()
 
@@ -26,12 +31,17 @@ func main() {
         })
     })
 
+    authRepo := auth.NewRepository(database.DB)
+    authService := auth.NewService(authRepo)
+    authHandler := auth.NewHandler(authService)
+    auth.RegisterRoutes(r, authHandler, middleware.AuthMiddleware())
+
     port := os.Getenv("PORT")
     if port == "" {
         port = "8080"
     }
 
-    log.Printf("Server running on port %s", port)
+    log.Printf("Schomora API running on port %s", port)
     if err := r.Run(":" + port); err != nil {
         log.Fatal(err)
     }
