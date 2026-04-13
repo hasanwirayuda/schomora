@@ -65,14 +65,16 @@ type service struct {
     moduleRepo interface {
         FindModuleByID(id string) (*models.Module, error)
     }
+	xpAwarder XPAwarder
 }
 
 func NewService(
     repo Repository,
     courseRepo interface{ FindCourseByID(id string) (*models.Course, error) },
     moduleRepo interface{ FindModuleByID(id string) (*models.Module, error) },
+    xpAwarder XPAwarder,
 ) Service {
-    return &service{repo, courseRepo, moduleRepo}
+    return &service{repo, courseRepo, moduleRepo, xpAwarder}
 }
 
 func (s *service) CreateQuestion(courseID string, input CreateQuestionInput, userID uuid.UUID) (*models.Question, error) {
@@ -287,7 +289,14 @@ func (s *service) SubmitQuiz(attemptID string, input SubmitQuizInput, userID uui
         return nil, errors.New("failed to save attempt result")
     }
 
-    // Load ulang dengan answers
+    // Award XP
+    prevAttempts, _ := s.repo.FindAttemptsByUserAndQuiz(userID, attempt.QuizID)
+    isFirst := len(prevAttempts) <= 1
+
+    if s.xpAwarder != nil {
+        s.xpAwarder.AwardQuizXP(userID, attempt.Score, isFirst)
+    }
+
     return s.repo.FindAttemptByID(attemptID)
 }
 

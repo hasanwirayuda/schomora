@@ -8,6 +8,7 @@ import (
 	"github.com/hasanwirayuda/schomora/api/internal/auth"
 	"github.com/hasanwirayuda/schomora/api/internal/course"
 	"github.com/hasanwirayuda/schomora/api/internal/enrollment"
+	"github.com/hasanwirayuda/schomora/api/internal/gamification"
 	"github.com/hasanwirayuda/schomora/api/internal/models"
 	"github.com/hasanwirayuda/schomora/api/internal/progress"
 	"github.com/hasanwirayuda/schomora/api/internal/quiz"
@@ -22,6 +23,7 @@ func main() {
     }
 
     database.Connect()
+    database.ConnectRedis()
 
     database.DB.AutoMigrate(
         &models.User{},
@@ -33,6 +35,8 @@ func main() {
         &models.QuizAttempt{},
         &models.AttemptAnswer{},
         &models.ModuleProgress{},
+        &models.Badge{},
+        &models.UserBadge{},
     )
 
     r := gin.Default()
@@ -61,9 +65,16 @@ func main() {
     enrollmentHandler := enrollment.NewHandler(enrollmentService)
     enrollment.RegisterRoutes(r, enrollmentHandler, authMiddleware)
 
-    // Quiz
+    // Gamification — init dulu sebelum quiz
+    gamifRepo := gamification.NewRepository(database.DB, database.Redis)
+    gamifService := gamification.NewService(gamifRepo)
+    gamifService.SeedBadges()
+    gamifHandler := gamification.NewHandler(gamifService)
+    gamification.RegisterRoutes(r, gamifHandler, authMiddleware)
+
+    // Quiz — pass gamifService sebagai XPAwarder
     quizRepo := quiz.NewRepository(database.DB)
-    quizService := quiz.NewService(quizRepo, courseRepo, courseRepo)
+    quizService := quiz.NewService(quizRepo, courseRepo, courseRepo, gamification.NewQuizXPAdapter(gamifService))
     quizHandler := quiz.NewHandler(quizService)
     quiz.RegisterRoutes(r, quizHandler, authMiddleware)
 
