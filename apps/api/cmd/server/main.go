@@ -9,6 +9,7 @@ import (
 	"github.com/hasanwirayuda/schomora/api/internal/course"
 	"github.com/hasanwirayuda/schomora/api/internal/enrollment"
 	"github.com/hasanwirayuda/schomora/api/internal/models"
+	"github.com/hasanwirayuda/schomora/api/internal/quiz"
 	"github.com/hasanwirayuda/schomora/api/pkg/database"
 	"github.com/hasanwirayuda/schomora/api/pkg/middleware"
 	"github.com/joho/godotenv"
@@ -26,15 +27,16 @@ func main() {
         &models.Course{},
         &models.Module{},
         &models.Enrollment{},
+        &models.Question{},
+        &models.Quiz{},
+        &models.QuizAttempt{},
+        &models.AttemptAnswer{},
     )
 
     r := gin.Default()
 
     r.GET("/health", func(c *gin.Context) {
-        c.JSON(200, gin.H{
-            "status":  "ok",
-            "service": "schomora-api",
-        })
+        c.JSON(200, gin.H{"status": "ok", "service": "schomora-api"})
     })
 
     authMiddleware := middleware.AuthMiddleware()
@@ -56,6 +58,12 @@ func main() {
     enrollmentService := enrollment.NewService(enrollmentRepo, courseRepo)
     enrollmentHandler := enrollment.NewHandler(enrollmentService)
     enrollment.RegisterRoutes(r, enrollmentHandler, authMiddleware)
+
+    // Quiz
+    quizRepo := quiz.NewRepository(database.DB)
+    quizService := quiz.NewService(quizRepo, courseRepo, courseRepo)
+    quizHandler := quiz.NewHandler(quizService)
+    quiz.RegisterRoutes(r, quizHandler, authMiddleware)
 
     port := os.Getenv("PORT")
     if port == "" {
