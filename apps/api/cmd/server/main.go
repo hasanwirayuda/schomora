@@ -6,6 +6,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/hasanwirayuda/schomora/api/internal/auth"
+	"github.com/hasanwirayuda/schomora/api/internal/certificate"
 	"github.com/hasanwirayuda/schomora/api/internal/course"
 	"github.com/hasanwirayuda/schomora/api/internal/enrollment"
 	"github.com/hasanwirayuda/schomora/api/internal/gamification"
@@ -37,6 +38,7 @@ func main() {
         &models.ModuleProgress{},
         &models.Badge{},
         &models.UserBadge{},
+        &models.Certificate{},
     )
 
     r := gin.Default()
@@ -65,14 +67,14 @@ func main() {
     enrollmentHandler := enrollment.NewHandler(enrollmentService)
     enrollment.RegisterRoutes(r, enrollmentHandler, authMiddleware)
 
-    // Gamification — init dulu sebelum quiz
+    // Gamification
     gamifRepo := gamification.NewRepository(database.DB, database.Redis)
     gamifService := gamification.NewService(gamifRepo)
     gamifService.SeedBadges()
     gamifHandler := gamification.NewHandler(gamifService)
     gamification.RegisterRoutes(r, gamifHandler, authMiddleware)
 
-    // Quiz — pass gamifService sebagai XPAwarder
+    // Quiz
     quizRepo := quiz.NewRepository(database.DB)
     quizService := quiz.NewService(quizRepo, courseRepo, courseRepo, gamification.NewQuizXPAdapter(gamifService))
     quizHandler := quiz.NewHandler(quizService)
@@ -90,6 +92,20 @@ func main() {
     )
     progressHandler := progress.NewHandler(progressService)
     progress.RegisterRoutes(r, progressHandler, authMiddleware)
+
+    // Certificate
+    certRepo := certificate.NewRepository(database.DB)
+    certService := certificate.NewService(
+        certRepo,
+        courseRepo,
+        courseRepo,
+        progressRepo,
+        quizRepo,
+        quizRepo,
+        gamifRepo,
+    )
+    certHandler := certificate.NewHandler(certService)
+    certificate.RegisterRoutes(r, certHandler, authMiddleware)
 
     port := os.Getenv("PORT")
     if port == "" {
