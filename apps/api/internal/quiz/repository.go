@@ -98,7 +98,7 @@ func (r *repository) UpdateAttempt(attempt *models.QuizAttempt) error {
 
 func (r *repository) FindAttemptByID(id string) (*models.QuizAttempt, error) {
     var attempt models.QuizAttempt
-    err := r.db.Preload("Answers").Preload("Answers.Question").
+    err := r.db.Preload("Quiz").Preload("Answers").Preload("Answers.Question").
         Where("id = ?", id).First(&attempt).Error
     if err != nil {
         return nil, err
