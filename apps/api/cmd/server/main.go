@@ -9,6 +9,7 @@ import (
 	"github.com/hasanwirayuda/schomora/api/internal/course"
 	"github.com/hasanwirayuda/schomora/api/internal/enrollment"
 	"github.com/hasanwirayuda/schomora/api/internal/models"
+	"github.com/hasanwirayuda/schomora/api/internal/progress"
 	"github.com/hasanwirayuda/schomora/api/internal/quiz"
 	"github.com/hasanwirayuda/schomora/api/pkg/database"
 	"github.com/hasanwirayuda/schomora/api/pkg/middleware"
@@ -31,6 +32,7 @@ func main() {
         &models.Quiz{},
         &models.QuizAttempt{},
         &models.AttemptAnswer{},
+        &models.ModuleProgress{},
     )
 
     r := gin.Default()
@@ -64,6 +66,19 @@ func main() {
     quizService := quiz.NewService(quizRepo, courseRepo, courseRepo)
     quizHandler := quiz.NewHandler(quizService)
     quiz.RegisterRoutes(r, quizHandler, authMiddleware)
+
+    // Progress
+    progressRepo := progress.NewRepository(database.DB)
+    progressService := progress.NewService(
+        progressRepo,
+        courseRepo,
+        courseRepo,
+        enrollmentRepo,
+        quizRepo,
+        quizRepo,
+    )
+    progressHandler := progress.NewHandler(progressService)
+    progress.RegisterRoutes(r, progressHandler, authMiddleware)
 
     port := os.Getenv("PORT")
     if port == "" {
