@@ -4,6 +4,7 @@ import (
 	"log"
 	"os"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/hasanwirayuda/schomora/api/internal/auth"
 	"github.com/hasanwirayuda/schomora/api/internal/certificate"
@@ -42,6 +43,13 @@ func main() {
     )
 
     r := gin.Default()
+
+    r.Use(cors.New(cors.Config{
+        AllowOrigins:     []string{"http://localhost:3000"},
+        AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
+        AllowHeaders:     []string{"Origin", "Content-Type", "Authorization"},
+        AllowCredentials: true,
+    }))
 
     r.GET("/health", func(c *gin.Context) {
         c.JSON(200, gin.H{"status": "ok", "service": "schomora-api"})
