@@ -1,0 +1,98 @@
+"use client";
+
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import { useMutation } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { authApi } from "@/lib/api/auth";
+import { useAuthStore } from "@/lib/store/auth";
+import Button from "@/components/ui/button";
+import Input from "@/components/ui/input";
+import Card from "@/components/ui/card";
+
+const schema = z.object({
+  email: z.string().email("Email tidak valid"),
+  password: z.string().min(1, "Password wajib diisi"),
+});
+
+type FormData = z.infer<typeof schema>;
+
+export default function LoginPage() {
+  const router = useRouter();
+  const setAuth = useAuthStore((s) => s.setAuth);
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormData>({
+    resolver: zodResolver(schema),
+  });
+
+  const { mutate, isPending, error } = useMutation({
+    mutationFn: authApi.login,
+    onSuccess: (data) => {
+      setAuth(data.user, data.token);
+      router.push("/dashboard");
+    },
+  });
+
+  return (
+    <Card padding="lg">
+      {/* Logo */}
+      <div className="text-center mb-8">
+        <h1 className="text-2xl font-bold text-indigo-600">Schomora</h1>
+        <p className="text-sm text-gray-500 mt-1">Adaptive Learning Platform</p>
+      </div>
+
+      <h2 className="text-xl font-semibold text-gray-900 mb-1">
+        Masuk ke akun
+      </h2>
+      <p className="text-sm text-gray-500 mb-6">
+        Belum punya akun?{" "}
+        <Link
+          href="/register"
+          className="text-indigo-600 hover:underline font-medium"
+        >
+          Daftar gratis
+        </Link>
+      </p>
+
+      {error && (
+        <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-600">
+          {(error as any)?.response?.data?.error || "Email atau password salah"}
+        </div>
+      )}
+
+      <form
+        onSubmit={handleSubmit((data) => mutate(data))}
+        className="flex flex-col gap-4"
+      >
+        <Input
+          label="Email"
+          type="email"
+          placeholder="john@example.com"
+          error={errors.email?.message}
+          {...register("email")}
+        />
+        <Input
+          label="Password"
+          type="password"
+          placeholder="Password kamu"
+          error={errors.password?.message}
+          {...register("password")}
+        />
+        <Button
+          type="submit"
+          size="lg"
+          isLoading={isPending}
+          className="mt-2 w-full"
+        >
+          Masuk
+        </Button>
+      </form>
+    </Card>
+  );
+}
