@@ -23,9 +23,10 @@ async function getCertificate(id: string) {
 export default async function VerifyPage({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }) {
-  const data = await getCertificate(params.id);
+  const { id } = await params;
+  const data = await getCertificate(id);
   const isValid = data?.valid && data?.certificate;
   const cert = data?.certificate;
 
