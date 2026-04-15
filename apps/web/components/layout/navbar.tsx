@@ -4,7 +4,14 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useAuthStore } from "@/lib/store/auth";
 import Button from "@/components/ui/button";
-import { BookOpen, LayoutDashboard, Trophy, LogOut, User } from "lucide-react";
+import {
+  BookOpen,
+  LayoutDashboard,
+  Trophy,
+  LogOut,
+  User,
+  Award,
+} from "lucide-react";
 
 export default function Navbar() {
   const { user, logout } = useAuthStore();
@@ -43,6 +50,13 @@ export default function Navbar() {
           >
             <Trophy size={16} />
             Leaderboard
+          </Link>
+          <Link
+            href="/certificates"
+            className="flex items-center gap-1.5 px-3 py-2 text-sm text-gray-600 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-colors"
+          >
+            <Award size={16} />
+            Sertifikat
           </Link>
         </div>
 
