@@ -1,15 +1,11 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Cal_Sans } from "next/font/google";
 import "./globals.css";
 import QueryProvider from "@/providers/query-provider";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const calSans = Cal_Sans({
+  weight: "400",
+  variable: "--font-cal-sans",
   subsets: ["latin"],
 });
 
@@ -25,10 +21,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="id">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+    <html lang="id" className={calSans.variable}>
+      <body className="antialiased">
         <QueryProvider>{children}</QueryProvider>
       </body>
     </html>
