@@ -13,9 +13,9 @@ import Input from "@/components/ui/input";
 import Card from "@/components/ui/card";
 
 const schema = z.object({
-  name: z.string().min(2, "Nama minimal 2 karakter"),
-  email: z.string().email("Email tidak valid"),
-  password: z.string().min(6, "Password minimal 6 karakter"),
+  name: z.string().min(2, "Name must be at least 2 characters"),
+  email: z.string().email("Invalid email address"),
+  password: z.string().min(6, "Password must be at least 6 characters"),
 });
 
 type FormData = z.infer<typeof schema>;
@@ -42,28 +42,27 @@ export default function RegisterPage() {
 
   return (
     <Card padding="lg">
-      {/* Logo */}
       <div className="text-center mb-8">
         <h1 className="text-2xl font-bold text-indigo-600">Schomora</h1>
         <p className="text-sm text-gray-500 mt-1">Adaptive Learning Platform</p>
       </div>
 
       <h2 className="text-xl font-semibold text-gray-900 mb-1">
-        Buat akun baru
+        Create a new account
       </h2>
       <p className="text-sm text-gray-500 mb-6">
-        Sudah punya akun?{" "}
+        Already have an account?{" "}
         <Link
           href="/login"
           className="text-indigo-600 hover:underline font-medium"
         >
-          Masuk di sini
+          Sign in here
         </Link>
       </p>
 
       {error && (
         <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-600">
-          {(error as any)?.response?.data?.error || "Terjadi kesalahan"}
+          {(error as any)?.response?.data?.error || "An error occurred"}
         </div>
       )}
 
@@ -72,7 +71,7 @@ export default function RegisterPage() {
         className="flex flex-col gap-4"
       >
         <Input
-          label="Nama lengkap"
+          label="Full name"
           placeholder="John Doe"
           error={errors.name?.message}
           {...register("name")}
@@ -87,7 +86,7 @@ export default function RegisterPage() {
         <Input
           label="Password"
           type="password"
-          placeholder="Minimal 6 karakter"
+          placeholder="At least 6 characters"
           error={errors.password?.message}
           {...register("password")}
         />
@@ -97,7 +96,7 @@ export default function RegisterPage() {
           isLoading={isPending}
           className="mt-2 w-full"
         >
-          Daftar sekarang
+          Register now
         </Button>
       </form>
     </Card>
