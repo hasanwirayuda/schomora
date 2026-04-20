@@ -27,7 +27,7 @@ export default function CertificatesPage() {
   if (isLoading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600" />
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary" />
       </div>
     );
   }
@@ -35,18 +35,18 @@ export default function CertificatesPage() {
   return (
     <div className="flex flex-col gap-6">
       <div>
-        <h1 className="text-2xl font-bold text-gray-900">Sertifikatku</h1>
+        <h1 className="text-2xl font-medium text-gray-900">My Certificates</h1>
         <p className="text-gray-500 mt-1">
-          Kumpulan sertifikat yang telah kamu raih
+          A collection of certificates you have earned
         </p>
       </div>
 
       {!certificates || certificates.length === 0 ? (
         <Card className="text-center py-16">
           <Award size={40} className="mx-auto text-gray-300 mb-4" />
-          <p className="text-gray-500 mb-2">Belum ada sertifikat</p>
+          <p className="text-gray-500 mb-2">No certificates yet</p>
           <p className="text-sm text-gray-400">
-            Selesaikan kursus untuk mendapatkan sertifikat
+            Complete courses to earn certificates
           </p>
         </Card>
       ) : (
@@ -60,11 +60,11 @@ export default function CertificatesPage() {
                 </div>
                 <div className="flex-1 min-w-0">
                   <h3 className="font-semibold text-gray-900 text-sm leading-tight">
-                    {cert.course?.title || "Kursus"}
+                    {cert.course?.title || "Course"}
                   </h3>
                   <p className="text-xs text-gray-500 mt-0.5">
-                    Skor rata-rata:{" "}
-                    <span className="font-medium text-indigo-600">
+                    Average score:{" "}
+                    <span className="font-medium text-primary">
                       {cert.average_score}%
                     </span>
                   </p>
@@ -74,8 +74,8 @@ export default function CertificatesPage() {
               {/* Date */}
               <div className="flex items-center gap-1.5 text-xs text-gray-400">
                 <Calendar size={12} />
-                Diterbitkan{" "}
-                {new Date(cert.issued_at).toLocaleDateString("id-ID", {
+                Issued on{" "}
+                {new Date(cert.issued_at).toLocaleDateString("en-US", {
                   day: "numeric",
                   month: "long",
                   year: "numeric",
@@ -104,7 +104,7 @@ export default function CertificatesPage() {
                   className="flex-1"
                 >
                   <Button variant="secondary" size="sm" className="w-full">
-                    <ExternalLink size={14} /> Verifikasi
+                    <ExternalLink size={14} /> Verify
                   </Button>
                 </a>
               </div>
