@@ -58,7 +58,7 @@
 - Use `bg-white/20 backdrop-blur-xs` for glassmorphism.
 - Use `border-white/20` for borders.
 - Use smooth transitions: `transition-all duration-300`.
-- Colors: `bg-[#004D4D]` (primary), `text-white`, `text-gray-300`.
+- Colors: `bg-[#2c6c62]` (primary), `text-white`, `text-gray-300`.
 - Typography: `font-cal-sans`.
 
 ## 8. Important Notes

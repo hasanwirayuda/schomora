@@ -37,30 +37,28 @@ export default function DashboardPage() {
   if (isLoading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600" />
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary" />
       </div>
     );
   }
 
   return (
     <div className="flex flex-col gap-8">
-      {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900">
-          Selamat datang, {user?.name}! 👋
+        <h1 className="text-2xl font-medium text-gray-900">
+          Welcome back, {user?.name}!
         </h1>
         <p className="text-gray-500 mt-1">
-          Lanjutkan perjalanan belajarmu hari ini.
+          Continue your learning journey today.
         </p>
       </div>
 
-      {/* Stats */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <Card padding="sm" className="flex flex-col gap-1">
-          <div className="flex items-center gap-2 text-indigo-600">
+          <div className="flex items-center gap-2 text-primary">
             <BookOpen size={16} />
             <span className="text-xs font-medium text-gray-500">
-              Kursus diikuti
+              Courses enrolled
             </span>
           </div>
           <p className="text-2xl font-bold text-gray-900">
@@ -72,7 +70,7 @@ export default function DashboardPage() {
           <div className="flex items-center gap-2 text-green-600">
             <TrendingUp size={16} />
             <span className="text-xs font-medium text-gray-500">
-              Kursus selesai
+              Courses completed
             </span>
           </div>
           <p className="text-2xl font-bold text-gray-900">
@@ -100,15 +98,14 @@ export default function DashboardPage() {
       </div>
 
       <div className="grid md:grid-cols-3 gap-6">
-        {/* Course Progress */}
         <div className="md:col-span-2 flex flex-col gap-4">
           <div className="flex items-center justify-between">
-            <h2 className="text-lg font-semibold text-gray-900">
-              Progress Kursus
+            <h2 className="text-lg font-medium text-gray-900">
+              Course Progress
             </h2>
             <Link href="/courses">
               <Button variant="ghost" size="sm">
-                Lihat semua <ChevronRight size={14} />
+                View all <ChevronRight size={14} />
               </Button>
             </Link>
           </div>
@@ -118,10 +115,10 @@ export default function DashboardPage() {
             <Card className="text-center py-12">
               <BookOpen size={32} className="mx-auto text-gray-300 mb-3" />
               <p className="text-gray-500 mb-4">
-                Belum ada kursus yang diikuti
+                You haven't enrolled in any courses yet
               </p>
               <Link href="/courses">
-                <Button>Jelajahi kursus</Button>
+                <Button>Browse courses</Button>
               </Link>
             </Card>
           ) : (
@@ -134,13 +131,14 @@ export default function DashboardPage() {
                         {cp.course_title}
                       </p>
                       <p className="text-xs text-gray-500 mt-0.5">
-                        {cp.completed_modules}/{cp.total_modules} modul selesai
+                        {cp.completed_modules}/{cp.total_modules} modules
+                        completed
                       </p>
                     </div>
                     <div className="flex items-center gap-2">
                       {cp.is_completed && (
                         <span className="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full font-medium">
-                          Selesai
+                          Completed
                         </span>
                       )}
                       <Link href={`/courses/${cp.course_id}`}>
@@ -152,7 +150,7 @@ export default function DashboardPage() {
                   </div>
                   <div className="w-full bg-gray-100 rounded-full h-2">
                     <div
-                      className="bg-indigo-600 h-2 rounded-full transition-all duration-500"
+                      className="bg-primary h-2 rounded-full transition-all duration-500"
                       style={{ width: `${cp.progress_percent}%` }}
                     />
                   </div>
@@ -165,15 +163,14 @@ export default function DashboardPage() {
           )}
         </div>
 
-        {/* Badges */}
         <div className="flex flex-col gap-4">
-          <h2 className="text-lg font-semibold text-gray-900">Badge</h2>
+          <h2 className="text-lg font-medium text-gray-900">Badges</h2>
           <Card>
             {!badges || badges.length === 0 ? (
               <div className="text-center py-8">
                 <Award size={32} className="mx-auto text-gray-300 mb-3" />
                 <p className="text-sm text-gray-500">
-                  Selesaikan quiz untuk mendapatkan badge!
+                  Complete quizzes to earn badges!
                 </p>
               </div>
             ) : (
