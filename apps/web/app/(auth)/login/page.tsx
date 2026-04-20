@@ -13,8 +13,8 @@ import Input from "@/components/ui/input";
 import Card from "@/components/ui/card";
 
 const schema = z.object({
-  email: z.string().email("Email tidak valid"),
-  password: z.string().min(1, "Password wajib diisi"),
+  email: z.string().email("Invalid email address"),
+  password: z.string().min(1, "Password is required"),
 });
 
 type FormData = z.infer<typeof schema>;
@@ -41,28 +41,27 @@ export default function LoginPage() {
 
   return (
     <Card padding="lg">
-      {/* Logo */}
       <div className="text-center mb-8">
-        <h1 className="text-2xl font-bold text-indigo-600">Schomora</h1>
+        <h1 className="text-2xl font-bold text-primary">Schomora</h1>
         <p className="text-sm text-gray-500 mt-1">Adaptive Learning Platform</p>
       </div>
 
-      <h2 className="text-xl font-semibold text-gray-900 mb-1">
-        Masuk ke akun
+      <h2 className="text-lg font-medium text-gray-900 mb-1">
+        Sign in to your account
       </h2>
       <p className="text-sm text-gray-500 mb-6">
-        Belum punya akun?{" "}
+        Don&apos;t have an account?{" "}
         <Link
           href="/register"
-          className="text-indigo-600 hover:underline font-medium"
+          className="text-primary hover:underline font-medium"
         >
-          Daftar gratis
+          Sign up for free
         </Link>
       </p>
 
       {error && (
         <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-600">
-          {(error as any)?.response?.data?.error || "Email atau password salah"}
+          {(error as any)?.response?.data?.error || "Invalid email or password"}
         </div>
       )}
 
@@ -80,7 +79,7 @@ export default function LoginPage() {
         <Input
           label="Password"
           type="password"
-          placeholder="Password kamu"
+          placeholder="Your password"
           error={errors.password?.message}
           {...register("password")}
         />
@@ -90,7 +89,7 @@ export default function LoginPage() {
           isLoading={isPending}
           className="mt-2 w-full"
         >
-          Masuk
+          Sign in
         </Button>
       </form>
     </Card>
