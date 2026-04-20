@@ -43,18 +43,18 @@ export default function RegisterPage() {
   return (
     <Card padding="lg">
       <div className="text-center mb-8">
-        <h1 className="text-2xl font-bold text-indigo-600">Schomora</h1>
+        <h1 className="text-2xl font-bold text-primary">Schomora</h1>
         <p className="text-sm text-gray-500 mt-1">Adaptive Learning Platform</p>
       </div>
 
-      <h2 className="text-xl font-semibold text-gray-900 mb-1">
+      <h2 className="text-lg font-medium text-gray-900 mb-1">
         Create a new account
       </h2>
       <p className="text-sm text-gray-500 mb-6">
         Already have an account?{" "}
         <Link
           href="/login"
-          className="text-indigo-600 hover:underline font-medium"
+          className="text-primary hover:underline font-medium"
         >
           Sign in here
         </Link>
