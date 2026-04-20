@@ -8,6 +8,7 @@
 @theme inline {
   --font-cal-sans: var(--font-cal-sans);
   --color-primary: #2c6c62;
+  --color-secondary: #3da58a;
   --color-background: var(--background);
   --color-foreground: var(--foreground);
 }
