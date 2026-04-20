@@ -39,7 +39,6 @@ export default function QuizPage() {
   const [startTimes, setStartTimes] = useState<Record<string, number>>({});
   const [timeLeft, setTimeLeft] = useState(0);
 
-  // Ambil info module
   const {
     data: quiz,
     isLoading: quizLoading,
@@ -55,7 +54,6 @@ export default function QuizPage() {
     enabled: !!quiz?.id,
   });
 
-  // Timer countdown
   useEffect(() => {
     if (phase !== "ongoing" || timeLeft <= 0) return;
     const interval = setInterval(() => {
@@ -71,7 +69,6 @@ export default function QuizPage() {
     return () => clearInterval(interval);
   }, [phase, timeLeft]);
 
-  // Set start time saat soal berubah
   useEffect(() => {
     if (phase !== "ongoing" || !questions[currentIndex]) return;
     const qid = questions[currentIndex].id;
@@ -136,7 +133,7 @@ export default function QuizPage() {
   if (quizLoading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600" />
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary" />
       </div>
     );
   }
@@ -146,18 +143,15 @@ export default function QuizPage() {
       <div className="max-w-lg mx-auto mt-16">
         <Card className="text-center py-12">
           <AlertCircle size={40} className="mx-auto text-gray-300 mb-4" />
-          <p className="text-gray-500 mb-4">
-            Quiz tidak ditemukan untuk modul ini
-          </p>
+          <p className="text-gray-500 mb-4">Quiz not found for this module</p>
           <Button variant="secondary" onClick={() => router.back()}>
-            <ArrowLeft size={16} /> Kembali
+            <ArrowLeft size={16} /> Back
           </Button>
         </Card>
       </div>
     );
   }
 
-  // ── IDLE PHASE ──────────────────────────────────
   if (phase === "idle") {
     const lastAttempt = attempts?.[0];
 
@@ -167,13 +161,13 @@ export default function QuizPage() {
           onClick={() => router.back()}
           className="flex items-center gap-2 text-sm text-gray-500 hover:text-gray-900 w-fit"
         >
-          <ArrowLeft size={16} /> Kembali
+          <ArrowLeft size={16} /> Back
         </button>
 
         <Card padding="lg" className="flex flex-col gap-6">
           <div className="text-center">
-            <div className="w-16 h-16 bg-indigo-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
-              <BookOpen size={28} className="text-indigo-600" />
+            <div className="w-16 h-16 bg-indigo-50 rounded-2xl flex items-center justify-center mx-auto mb-4">
+              <BookOpen size={28} className="text-primary" />
             </div>
             <h1 className="text-xl font-bold text-gray-900">{quiz.title}</h1>
             {quiz.description && (
@@ -185,23 +179,23 @@ export default function QuizPage() {
             {quiz.time_limit > 0 && (
               <div className="flex items-center justify-between text-sm">
                 <span className="text-gray-600 flex items-center gap-1.5">
-                  <Clock size={14} /> Batas waktu
+                  <Clock size={14} /> Time limit
                 </span>
                 <span className="font-medium text-gray-900">
-                  {Math.floor(quiz.time_limit / 60)} menit
+                  {Math.floor(quiz.time_limit / 60)} minutes
                 </span>
               </div>
             )}
             {lastAttempt && (
               <div className="flex items-center justify-between text-sm">
-                <span className="text-gray-600">Skor terakhir</span>
-                <span className="font-medium text-indigo-600">
+                <span className="text-gray-600">Last score</span>
+                <span className="font-medium text-primary">
                   {Math.round(lastAttempt.score)}%
                 </span>
               </div>
             )}
             <div className="flex items-center justify-between text-sm">
-              <span className="text-gray-600">Total attempt</span>
+              <span className="text-gray-600">Total attempts</span>
               <span className="font-medium text-gray-900">
                 {attempts?.length || 0}x
               </span>
@@ -214,7 +208,7 @@ export default function QuizPage() {
             isLoading={isStarting}
             onClick={() => startQuiz()}
           >
-            {attempts && attempts.length > 0 ? "Coba lagi" : "Mulai quiz"}
+            {attempts && attempts.length > 0 ? "Try again" : "Start quiz"}
             <ChevronRight size={16} />
           </Button>
         </Card>
@@ -222,7 +216,6 @@ export default function QuizPage() {
     );
   }
 
-  // ── ONGOING PHASE ──────────────────────────────────
   const currentQuestion = questions[currentIndex];
   const answeredCount = Object.keys(answers).length;
   const progressPercent = (answeredCount / questions.length) * 100;
@@ -231,7 +224,6 @@ export default function QuizPage() {
 
   return (
     <div className="max-w-2xl mx-auto flex flex-col gap-4">
-      {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
           <span className="text-sm text-gray-500">
@@ -239,7 +231,7 @@ export default function QuizPage() {
           </span>
           <div className="w-32 bg-gray-200 rounded-full h-1.5">
             <div
-              className="bg-indigo-600 h-1.5 rounded-full transition-all"
+              className="bg-primary h-1.5 rounded-full transition-all"
               style={{ width: `${progressPercent}%` }}
             />
           </div>
@@ -256,10 +248,9 @@ export default function QuizPage() {
         )}
       </div>
 
-      {/* Question */}
       <Card padding="lg">
         <div className="flex items-center gap-2 mb-4">
-          <span className="text-xs bg-indigo-100 text-indigo-700 px-2 py-0.5 rounded-full">
+          <span className="text-xs bg-indigo-50 text-primary px-2 py-0.5 rounded-full">
             {currentQuestion.topic_tag}
           </span>
           <span className="text-xs text-gray-400">
@@ -282,7 +273,7 @@ export default function QuizPage() {
                 }
                 className={`w-full text-left px-4 py-3 rounded-lg border text-sm transition-all duration-150 ${
                   isSelected
-                    ? "border-indigo-500 bg-indigo-50 text-indigo-900 font-medium"
+                    ? "border-primary bg-indigo-50 text-primary font-medium"
                     : "border-gray-200 bg-white text-gray-700 hover:border-indigo-300 hover:bg-indigo-50"
                 }`}
               >
@@ -294,7 +285,6 @@ export default function QuizPage() {
         </div>
       </Card>
 
-      {/* Navigation */}
       <div className="flex items-center justify-between">
         <Button
           variant="secondary"
@@ -302,11 +292,11 @@ export default function QuizPage() {
           onClick={() => setCurrentIndex((i) => Math.max(0, i - 1))}
           disabled={currentIndex === 0}
         >
-          <ArrowLeft size={14} /> Sebelumnya
+          <ArrowLeft size={14} /> Previous
         </Button>
 
         <span className="text-xs text-gray-400">
-          {answeredCount}/{questions.length} terjawab
+          {answeredCount}/{questions.length} answered
         </span>
 
         {isLastQuestion ? (
@@ -325,12 +315,11 @@ export default function QuizPage() {
               setCurrentIndex((i) => Math.min(questions.length - 1, i + 1))
             }
           >
-            Berikutnya <ChevronRight size={14} />
+            Next <ChevronRight size={14} />
           </Button>
         )}
       </div>
 
-      {/* Question dots navigator */}
       <div className="flex flex-wrap gap-2 justify-center mt-2">
         {questions.map((q, i) => (
           <button
@@ -338,9 +327,9 @@ export default function QuizPage() {
             onClick={() => setCurrentIndex(i)}
             className={`w-8 h-8 rounded-full text-xs font-medium transition-all ${
               i === currentIndex
-                ? "bg-indigo-600 text-white"
+                ? "bg-primary text-white"
                 : answers[q.id]
-                  ? "bg-indigo-100 text-indigo-700"
+                  ? "bg-indigo-50 text-primary"
                   : "bg-gray-100 text-gray-500 hover:bg-gray-200"
             }`}
           >
