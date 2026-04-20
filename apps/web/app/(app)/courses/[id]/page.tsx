@@ -64,7 +64,7 @@ export default function CourseDetailPage() {
   if (isLoading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600" />
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary" />
       </div>
     );
   }
@@ -80,53 +80,51 @@ export default function CourseDetailPage() {
 
   return (
     <div className="flex flex-col gap-6">
-      {/* Back */}
       <button
         onClick={() => router.back()}
         className="flex items-center gap-2 text-sm text-gray-500 hover:text-gray-900 transition-colors w-fit"
       >
-        <ArrowLeft size={16} /> Kembali
+        <ArrowLeft size={16} /> Back
       </button>
 
-      {/* Header */}
       <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
         <div className="flex flex-col gap-2">
-          <h1 className="text-2xl font-bold text-gray-900">{course.title}</h1>
+          <h1 className="text-2xl font-medium text-gray-900">{course.title}</h1>
           <p className="text-gray-500">{course.description}</p>
           <p className="text-sm text-gray-400">
-            oleh {course.author?.name || "Unknown"}
+            by {course.author?.name || "Unknown"}
           </p>
         </div>
 
         {!isOwner && !isEnrolled && (
           <Button isLoading={isEnrolling} onClick={() => enroll()}>
-            Enroll gratis
+            Enroll for free
           </Button>
         )}
       </div>
 
-      {/* Progress bar */}
       {isEnrolled && progress && (
         <Card padding="sm">
           <div className="flex items-center justify-between mb-2">
-            <p className="text-sm font-medium text-gray-700">Progress kursus</p>
-            <p className="text-sm font-bold text-indigo-600">
+            <p className="text-sm font-medium text-gray-700">Course progress</p>
+            <p className="text-sm font-bold text-primary">
               {Math.round(progress.progress_percent)}%
             </p>
           </div>
           <div className="w-full bg-gray-100 rounded-full h-2.5">
             <div
-              className="bg-indigo-600 h-2.5 rounded-full transition-all duration-500"
+              className="bg-primary h-2.5 rounded-full transition-all duration-500"
               style={{ width: `${progress.progress_percent}%` }}
             />
           </div>
           <p className="text-xs text-gray-500 mt-2">
-            {progress.completed_modules}/{progress.total_modules} modul selesai
+            {progress.completed_modules}/{progress.total_modules} modules
+            completed
           </p>
           {progress.is_completed && (
             <Link href={`/courses/${id}/certificate`}>
               <Button size="sm" className="mt-3">
-                Ambil sertifikat 🎓
+                Get certificate 🎓
               </Button>
             </Link>
           )}
@@ -134,15 +132,14 @@ export default function CourseDetailPage() {
       )}
 
       <div className="grid md:grid-cols-3 gap-6">
-        {/* Module list */}
         <div className="md:col-span-2 flex flex-col gap-3">
-          <h2 className="text-lg font-semibold text-gray-900">
-            Modul ({modules.length})
+          <h2 className="text-lg font-medium text-gray-900">
+            Modules ({modules.length})
           </h2>
 
           {modules.length === 0 ? (
             <Card className="text-center py-10">
-              <p className="text-gray-400 text-sm">Belum ada modul</p>
+              <p className="text-gray-400 text-sm">No modules yet</p>
             </Card>
           ) : (
             modules.map((module: any, index: number) => {
@@ -176,7 +173,7 @@ export default function CourseDetailPage() {
                           size="sm"
                           onClick={() => markComplete(module.id)}
                         >
-                          Tandai selesai
+                          Mark complete
                         </Button>
                       )}
                       <Link href={`/quiz/${module.id}`}>
@@ -195,7 +192,6 @@ export default function CourseDetailPage() {
           )}
         </div>
 
-        {/* Skill Map */}
         {isEnrolled && skillMap && skillMap.length > 0 && (
           <div className="flex flex-col gap-4">
             <h2 className="text-lg font-semibold text-gray-900">Skill Map</h2>
@@ -217,10 +213,10 @@ export default function CourseDetailPage() {
                         }`}
                       >
                         {item.level === "strong"
-                          ? "Kuat"
+                          ? "Strong"
                           : item.level === "moderate"
-                            ? "Sedang"
-                            : "Lemah"}
+                            ? "Moderate"
+                            : "Weak"}
                       </span>
                     </div>
                     <div className="w-full bg-gray-100 rounded-full h-1.5">
