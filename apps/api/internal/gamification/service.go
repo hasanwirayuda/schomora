@@ -17,11 +17,11 @@ const (
 
 // Daftar semua badge yang tersedia
 var defaultBadges = []models.Badge{
-    {Code: "first_quiz", Name: "First Quiz", Description: "Selesaikan quiz pertamamu", Icon: "🎯"},
-    {Code: "perfect_score", Name: "Perfect Score", Description: "Raih skor 100 dalam satu quiz", Icon: "💯"},
-    {Code: "top_10", Name: "Top 10", Description: "Masuk 10 besar leaderboard", Icon: "🏆"},
-    {Code: "module_complete", Name: "Module Complete", Description: "Selesaikan modul pertamamu", Icon: "📚"},
-    {Code: "course_complete", Name: "Course Complete", Description: "Selesaikan satu kursus penuh", Icon: "🎓"},
+    {Code: "first_quiz", Name: "First Quiz", Description: "Complete your first quiz", Icon: "🎯"},
+    {Code: "perfect_score", Name: "Perfect Score", Description: "Get a score of 100 in a single quiz", Icon: "💯"},
+    {Code: "top_10", Name: "Top 10", Description: "Rank in the top 10 of the leaderboard", Icon: "🏆"},
+    {Code: "module_complete", Name: "Module Complete", Description: "Complete your first module", Icon: "📚"},
+    {Code: "course_complete", Name: "Course Complete", Description: "Complete a full course", Icon: "🎓"},
 }
 
 type AwardXPResult struct {
