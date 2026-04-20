@@ -31,7 +31,7 @@ function ResultContent() {
   if (isLoading || !attempt) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600" />
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary" />
       </div>
     );
   }
@@ -43,7 +43,6 @@ function ResultContent() {
 
   return (
     <div className="max-w-2xl mx-auto flex flex-col gap-6">
-      {/* Score card */}
       <Card padding="lg" className="text-center">
         <div
           className={`w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-4 ${
@@ -59,35 +58,34 @@ function ResultContent() {
           </span>
         </div>
 
-        <h1 className="text-xl font-bold text-gray-900 mb-1">
-          {isPassing ? "Selamat! 🎉" : "Coba lagi ya!"}
+        <h1 className="text-xl font-medium text-gray-900 mb-1">
+          {isPassing ? "Congratulations! 🎉" : "Try again!"}
         </h1>
         <p className="text-gray-500 text-sm">
           {isPassing
-            ? "Kamu berhasil menyelesaikan quiz ini dengan baik"
-            : "Kamu belum mencapai passing score 70%. Jangan menyerah!"}
+            ? "You have successfully completed this quiz"
+            : "You haven't reached the 70% passing score. Don't give up!"}
         </p>
 
         <div className="grid grid-cols-3 gap-4 mt-6">
           <div className="bg-gray-50 rounded-lg p-3">
             <p className="text-2xl font-bold text-gray-900">{correctCount}</p>
-            <p className="text-xs text-gray-500">Benar</p>
+            <p className="text-xs text-gray-500">Correct</p>
           </div>
           <div className="bg-gray-50 rounded-lg p-3">
             <p className="text-2xl font-bold text-gray-900">
               {totalCount - correctCount}
             </p>
-            <p className="text-xs text-gray-500">Salah</p>
+            <p className="text-xs text-gray-500">Incorrect</p>
           </div>
           <div className="bg-gray-50 rounded-lg p-3">
             <p className="text-2xl font-bold text-amber-600">
               +{isPassing ? (score === 100 ? 50 : 25) : 10} XP
             </p>
-            <p className="text-xs text-gray-500">XP didapat</p>
+            <p className="text-xs text-gray-500">XP earned</p>
           </div>
         </div>
 
-        {/* Ability estimate */}
         <div className="mt-4 p-3 bg-indigo-50 rounded-lg">
           <div className="flex items-center justify-between mb-1">
             <p className="text-xs text-indigo-700 font-medium flex items-center gap-1">
@@ -99,22 +97,19 @@ function ResultContent() {
           </div>
           <div className="w-full bg-indigo-100 rounded-full h-1.5">
             <div
-              className="bg-indigo-600 h-1.5 rounded-full transition-all"
+              className="bg-primary h-1.5 rounded-full transition-all"
               style={{ width: `${attempt.ability_estimate * 100}%` }}
             />
           </div>
           <p className="text-xs text-indigo-500 mt-1">
-            Soal berikutnya akan disesuaikan dengan kemampuanmu
+            The next questions will be adjusted to your ability
           </p>
         </div>
       </Card>
 
-      {/* Answer review */}
       {attempt.answers && attempt.answers.length > 0 && (
         <div className="flex flex-col gap-3">
-          <h2 className="text-lg font-semibold text-gray-900">
-            Review jawaban
-          </h2>
+          <h2 className="text-lg font-medium text-gray-900">Review answers</h2>
           {attempt.answers.map((answer, index) => (
             <Card key={answer.id} padding="sm">
               <div className="flex items-start gap-3">
@@ -141,18 +136,17 @@ function ResultContent() {
         </div>
       )}
 
-      {/* Actions */}
       <div className="flex gap-3">
         <Button
           variant="secondary"
           className="flex-1"
           onClick={() => router.push(`/quiz/${moduleId}`)}
         >
-          <RotateCcw size={14} /> Coba lagi
+          <RotateCcw size={14} /> Try again
         </Button>
         <Link href="/dashboard" className="flex-1">
           <Button className="w-full">
-            <Trophy size={14} /> Ke dashboard
+            <Trophy size={14} /> Go to dashboard
           </Button>
         </Link>
       </div>
@@ -165,7 +159,7 @@ export default function ResultPage() {
     <Suspense
       fallback={
         <div className="flex items-center justify-center h-64">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600" />
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary" />
         </div>
       }
     >
