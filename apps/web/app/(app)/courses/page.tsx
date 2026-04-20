@@ -36,7 +36,7 @@ export default function CoursesPage() {
   if (isLoading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600" />
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary" />
       </div>
     );
   }
@@ -44,16 +44,16 @@ export default function CoursesPage() {
   return (
     <div className="flex flex-col gap-6">
       <div>
-        <h1 className="text-2xl font-bold text-gray-900">Jelajahi Kursus</h1>
+        <h1 className="text-2xl font-medium text-gray-900">Browse Courses</h1>
         <p className="text-gray-500 mt-1">
-          Temukan kursus yang sesuai dengan minatmu
+          Find courses that match your interests
         </p>
       </div>
 
       {!courses || courses.length === 0 ? (
         <Card className="text-center py-16">
           <BookOpen size={40} className="mx-auto text-gray-300 mb-4" />
-          <p className="text-gray-500">Belum ada kursus yang tersedia</p>
+          <p className="text-gray-500">No courses available yet</p>
         </Card>
       ) : (
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -67,12 +67,10 @@ export default function CoursesPage() {
                 padding="sm"
                 className="flex flex-col gap-3"
               >
-                {/* Thumbnail */}
                 <div className="w-full h-36 bg-linear-to-br from-indigo-100 to-purple-100 rounded-lg flex items-center justify-center">
                   <BookOpen size={32} className="text-indigo-400" />
                 </div>
 
-                {/* Info */}
                 <div className="flex flex-col gap-1 flex-1">
                   <div className="flex items-start justify-between gap-2">
                     <h3 className="font-semibold text-gray-900 text-sm leading-tight">
@@ -80,41 +78,40 @@ export default function CoursesPage() {
                     </h3>
                     {isOwner && (
                       <span className="text-xs bg-purple-100 text-purple-700 px-2 py-0.5 rounded-full whitespace-nowrap">
-                        Milikmu
+                        Yours
                       </span>
                     )}
                   </div>
                   <p className="text-xs text-gray-500 line-clamp-2">
-                    {course.description || "Tidak ada deskripsi"}
+                    {course.description || "No description"}
                   </p>
                   <p className="text-xs text-gray-400 mt-1">
-                    oleh {course.author?.name || "Unknown"}
+                    by {course.author?.name || "Unknown"}
                   </p>
                 </div>
 
-                {/* Action */}
                 <div className="flex gap-2 pt-1 border-t border-gray-100">
                   {isOwner ? (
                     <Link href={`/courses/${course.id}`} className="flex-1">
                       <Button variant="secondary" size="sm" className="w-full">
-                        Kelola kursus <ChevronRight size={14} />
+                        Manage course <ChevronRight size={14} />
                       </Button>
                     </Link>
                   ) : isEnrolled ? (
                     <Link href={`/courses/${course.id}`} className="flex-1">
                       <Button size="sm" className="w-full">
-                        Lanjutkan belajar <ChevronRight size={14} />
+                        Continue learning <ChevronRight size={14} />
                       </Button>
                     </Link>
                   ) : (
                     <Button
                       size="sm"
-                      variant="secondary"
+                      variant="ghost"
                       className="flex-1"
                       isLoading={isEnrolling}
                       onClick={() => enroll(course.id)}
                     >
-                      Enroll gratis
+                      Enroll for free
                     </Button>
                   )}
                 </div>

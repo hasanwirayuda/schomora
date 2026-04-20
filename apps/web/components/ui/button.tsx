@@ -27,7 +27,7 @@ export default function Button({
             variant === "secondary",
           "bg-red-600 text-white hover:bg-red-700 active:scale-95":
             variant === "danger",
-          "text-gray-600 hover:bg-gray-100 active:scale-95":
+          "bg-gray-400 text-white hover:bg-gray-100 active:scale-95":
             variant === "ghost",
           "px-3 py-1.5 text-sm": size === "sm",
           "px-4 py-2 text-sm": size === "md",
