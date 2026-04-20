@@ -49,8 +49,8 @@ export default function CertificatePage() {
     onError: (err: any) => {
       const msg =
         err?.response?.data instanceof Blob
-          ? "Pastikan semua modul selesai dan skor rata-rata ≥ 70%"
-          : err?.response?.data?.error || "Gagal generate sertifikat";
+          ? "Make sure all modules are completed and average score is ≥ 70%"
+          : err?.response?.data?.error || "Failed to generate certificate";
       setError(msg);
     },
   });
@@ -77,13 +77,12 @@ export default function CertificatePage() {
     <div className="max-w-lg mx-auto flex flex-col gap-6">
       <button
         onClick={() => router.back()}
-        className="flex items-center gap-2 text-sm text-gray-500 hover:text-gray-900 w-fit"
+        className="flex items-center gap-2 text-sm cursor-pointer text-gray-500 hover:text-gray-900 w-fit"
       >
-        <ArrowLeft size={16} /> Kembali
+        <ArrowLeft size={16} /> Back
       </button>
 
       <Card padding="lg" className="flex flex-col gap-6">
-        {/* Icon */}
         <div className="text-center">
           <div
             className={`w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-4 ${
@@ -95,16 +94,15 @@ export default function CertificatePage() {
               className={isComplete ? "text-amber-600" : "text-gray-400"}
             />
           </div>
-          <h1 className="text-xl font-bold text-gray-900">
-            Sertifikat Kelulusan
+          <h1 className="text-xl font-medium text-gray-900">
+            Certificate of Completion
           </h1>
           <p className="text-sm text-gray-500 mt-1">{course?.title}</p>
         </div>
 
-        {/* Requirements */}
         <div className="flex flex-col gap-2 bg-gray-50 rounded-lg p-4">
           <p className="text-xs font-semibold text-gray-600 mb-1">
-            Syarat mendapatkan sertifikat:
+            Requirements to get certificate:
           </p>
           <div className="flex items-center gap-2 text-sm">
             {progress?.completed_modules === progress?.total_modules &&
@@ -120,7 +118,7 @@ export default function CertificatePage() {
                   : "text-gray-500"
               }
             >
-              Semua modul selesai ({progress?.completed_modules || 0}/
+              All modules completed ({progress?.completed_modules || 0}/
               {progress?.total_modules || 0})
             </span>
           </div>
@@ -131,34 +129,32 @@ export default function CertificatePage() {
               <AlertCircle size={16} className="text-gray-300 shrink-0" />
             )}
             <span className={isComplete ? "text-green-700" : "text-gray-500"}>
-              Skor rata-rata quiz ≥ 70%
+              Average quiz score ≥ 70%
             </span>
           </div>
         </div>
 
-        {/* Error */}
         {error && (
           <div className="p-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-600">
             {error}
           </div>
         )}
 
-        {/* Existing cert info */}
         {existingCert && (
           <div className="p-3 bg-green-50 border border-green-200 rounded-lg">
             <p className="text-sm text-green-700 font-medium mb-1">
-              Sertifikat sudah diterbitkan
+              Certificate has been issued
             </p>
             <p className="text-xs text-green-600">
-              Diterbitkan:{" "}
-              {new Date(existingCert.issued_at).toLocaleDateString("id-ID", {
+              Issued on:{" "}
+              {new Date(existingCert.issued_at).toLocaleDateString("en-US", {
                 day: "numeric",
                 month: "long",
                 year: "numeric",
               })}
             </p>
             <p className="text-xs text-green-600">
-              Skor rata-rata: {existingCert.average_score}%
+              Average score: {existingCert.average_score}%
             </p>
             <a
               href={`/verify/${existingCert.id}`}
@@ -166,12 +162,11 @@ export default function CertificatePage() {
               rel="noopener noreferrer"
               className="text-xs text-green-700 underline flex items-center gap-1 mt-1 w-fit"
             >
-              Verifikasi sertifikat <ExternalLink size={10} />
+              Verify certificate <ExternalLink size={10} />
             </a>
           </div>
         )}
 
-        {/* Actions */}
         {existingCert ? (
           <Button
             size="lg"
@@ -179,18 +174,18 @@ export default function CertificatePage() {
             isLoading={isDownloading}
             onClick={() => downloadCert()}
           >
-            <Download size={16} /> Download sertifikat
+            <Download size={16} /> Download certificate
           </Button>
         ) : (
           <Button
             size="lg"
-            className="w-full"
+            className="w-full cursor-pointer"
             isLoading={isGenerating}
             disabled={!isComplete}
             onClick={() => generateCert()}
           >
             <Award size={16} />
-            {isComplete ? "Generate sertifikat" : "Selesaikan kursus dulu"}
+            {isComplete ? "Generate certificate" : "Complete course first"}
           </Button>
         )}
       </Card>
