@@ -37,39 +37,33 @@ export default function LeaderboardPage() {
   return (
     <div className="flex flex-col gap-6 max-w-2xl mx-auto">
       <div>
-        <h1 className="text-2xl font-bold text-gray-900">Leaderboard</h1>
-        <p className="text-gray-500 mt-1">Top learner minggu ini</p>
+        <h1 className="text-2xl font-medium text-gray-900">Leaderboard</h1>
+        <p className="text-gray-500 mt-1">Top learners this week</p>
       </div>
 
-      {/* My rank */}
       {myRank && (
         <Card padding="sm" className="border-indigo-200 bg-indigo-50">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <Trophy size={20} className="text-indigo-600" />
+              <Trophy size={20} className="text-primary" />
               <div>
-                <p className="text-sm font-semibold text-indigo-900">
-                  Posisi kamu
-                </p>
-                <p className="text-xs text-indigo-600">{user?.name}</p>
+                <p className="text-sm font-semibold text-primary">Your rank</p>
+                <p className="text-xs text-primary">{user?.name}</p>
               </div>
             </div>
             <div className="text-right">
-              <p className="text-2xl font-bold text-indigo-700">
-                #{myRank.rank}
-              </p>
-              <p className="text-xs text-indigo-500">{myRank.xp} XP</p>
+              <p className="text-2xl font-bold text-primary">#{myRank.rank}</p>
+              <p className="text-xs text-secondary">{myRank.xp} XP</p>
             </div>
           </div>
         </Card>
       )}
 
-      {/* Leaderboard list */}
       <Card padding="sm">
         {!leaderboard || leaderboard.length === 0 ? (
           <div className="text-center py-12">
             <Medal size={32} className="mx-auto text-gray-300 mb-3" />
-            <p className="text-gray-500">Belum ada data leaderboard</p>
+            <p className="text-gray-500">No leaderboard data yet</p>
           </div>
         ) : (
           <div className="flex flex-col divide-y divide-gray-100">
@@ -91,7 +85,7 @@ export default function LeaderboardPage() {
                         isMe ? "text-indigo-700" : "text-gray-900"
                       }`}
                     >
-                      {entry.name} {isMe && "(Kamu)"}
+                      {entry.name} {isMe && "(You)"}
                     </p>
                   </div>
                   <div className="text-right">
