@@ -73,7 +73,7 @@ export default function CoursesPage() {
 
                 <div className="flex flex-col gap-1 flex-1">
                   <div className="flex items-start justify-between gap-2">
-                    <h3 className="font-semibold text-gray-900 text-sm leading-tight">
+                    <h3 className="font-medium text-gray-900 text-sm leading-tight">
                       {course.title}
                     </h3>
                     {isOwner && (

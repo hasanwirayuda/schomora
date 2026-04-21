@@ -159,7 +159,7 @@ export default function QuizPage() {
       <div className="max-w-lg mx-auto flex flex-col gap-4">
         <button
           onClick={() => router.back()}
-          className="flex items-center gap-2 text-sm text-gray-500 hover:text-gray-900 w-fit"
+          className="flex items-center cursor-pointer gap-2 text-sm text-gray-500 hover:text-gray-900 w-fit"
         >
           <ArrowLeft size={16} /> Back
         </button>
@@ -169,7 +169,7 @@ export default function QuizPage() {
             <div className="w-16 h-16 bg-indigo-50 rounded-2xl flex items-center justify-center mx-auto mb-4">
               <BookOpen size={28} className="text-primary" />
             </div>
-            <h1 className="text-xl font-bold text-gray-900">{quiz.title}</h1>
+            <h1 className="text-xl font-medium text-gray-900">{quiz.title}</h1>
             {quiz.description && (
               <p className="text-sm text-gray-500 mt-2">{quiz.description}</p>
             )}

@@ -104,7 +104,7 @@ export default function DashboardPage() {
               Course Progress
             </h2>
             <Link href="/courses">
-              <Button variant="ghost" size="sm">
+              <Button variant="secondary" size="sm">
                 View all <ChevronRight size={14} />
               </Button>
             </Link>
@@ -142,7 +142,7 @@ export default function DashboardPage() {
                         </span>
                       )}
                       <Link href={`/courses/${cp.course_id}`}>
-                        <Button variant="ghost" size="sm">
+                        <Button variant="secondary" size="sm">
                           <ChevronRight size={14} />
                         </Button>
                       </Link>

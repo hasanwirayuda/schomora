@@ -70,7 +70,7 @@ export default function Navbar() {
               {user?.xp_total || 0} XP
             </span>
           </div>
-          <Button variant="ghost" size="sm" onClick={handleLogout}>
+          <Button variant="secondary" size="sm" onClick={handleLogout}>
             <LogOut size={16} />
           </Button>
         </div>
