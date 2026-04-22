@@ -67,8 +67,16 @@ export default function CoursesPage() {
                 padding="sm"
                 className="flex flex-col gap-3"
               >
-                <div className="w-full h-36 bg-linear-to-br from-indigo-100 to-purple-100 rounded-lg flex items-center justify-center">
-                  <BookOpen size={32} className="text-indigo-400" />
+                <div className="w-full h-36 rounded-lg overflow-hidden bg-linear-to-br from-indigo-100 to-purple-100 flex items-center justify-center">
+                  {course.thumbnail ? (
+                    <img
+                      src={course.thumbnail}
+                      alt={course.title}
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <BookOpen size={32} className="text-indigo-400" />
+                  )}
                 </div>
 
                 <div className="flex flex-col gap-1 flex-1">
