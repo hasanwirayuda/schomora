@@ -53,51 +53,111 @@ export default function DashboardPage() {
         </p>
       </div>
 
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <Card padding="sm" className="flex flex-col gap-1">
-          <div className="flex items-center gap-2 text-primary">
-            <BookOpen size={16} />
-            <span className="text-xs font-medium text-gray-500">
-              Courses enrolled
-            </span>
-          </div>
-          <p className="text-2xl font-bold text-gray-900">
-            {dashboard?.total_enrolled || 0}
-          </p>
-        </Card>
+      <div className="grid md:grid-cols-3 gap-6">
+        <div className="md:col-span-2 h-fit p-4 bg-white border border-gray-200 rounded-xl">
+          <h3 className="text-black pb-2 -mt-1">Overview</h3>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <Card
+              padding="sm"
+              className="flex flex-col gap-1"
+              bgColor="bg-slate-100"
+              border={false}
+            >
+              <div className="flex items-center gap-2 text-primary">
+                <BookOpen size={16} />
+                <span className="text-xs font-medium text-gray-500">
+                  Courses enrolled
+                </span>
+              </div>
+              <p className="text-2xl font-bold text-gray-900">
+                {dashboard?.total_enrolled || 0}
+              </p>
+            </Card>
 
-        <Card padding="sm" className="flex flex-col gap-1">
-          <div className="flex items-center gap-2 text-green-600">
-            <TrendingUp size={16} />
-            <span className="text-xs font-medium text-gray-500">
-              Courses completed
-            </span>
-          </div>
-          <p className="text-2xl font-bold text-gray-900">
-            {dashboard?.total_completed || 0}
-          </p>
-        </Card>
+            <Card
+              padding="sm"
+              className="flex flex-col gap-1"
+              bgColor="bg-slate-100"
+              border={false}
+            >
+              <div className="flex items-center gap-2 text-green-600">
+                <TrendingUp size={16} />
+                <span className="text-xs font-medium text-gray-500">
+                  Courses completed
+                </span>
+              </div>
+              <p className="text-2xl font-bold text-gray-900">
+                {dashboard?.total_completed || 0}
+              </p>
+            </Card>
 
-        <Card padding="sm" className="flex flex-col gap-1">
-          <div className="flex items-center gap-2 text-amber-600">
-            <Zap size={16} />
-            <span className="text-xs font-medium text-gray-500">Total XP</span>
-          </div>
-          <p className="text-2xl font-bold text-gray-900">{rank?.xp || 0}</p>
-        </Card>
+            <Card
+              padding="sm"
+              className="flex flex-col gap-1"
+              bgColor="bg-slate-100"
+              border={false}
+            >
+              <div className="flex items-center gap-2 text-amber-600">
+                <Zap size={16} />
+                <span className="text-xs font-medium text-gray-500">
+                  Total XP
+                </span>
+              </div>
+              <p className="text-2xl font-bold text-gray-900">
+                {rank?.xp || 0}
+              </p>
+            </Card>
 
-        <Card padding="sm" className="flex flex-col gap-1">
-          <div className="flex items-center gap-2 text-purple-600">
-            <Trophy size={16} />
-            <span className="text-xs font-medium text-gray-500">Ranking</span>
+            <Card
+              padding="sm"
+              className="flex flex-col gap-1"
+              bgColor="bg-slate-100"
+              border={false}
+            >
+              <div className="flex items-center gap-2 text-purple-600">
+                <Trophy size={16} />
+                <span className="text-xs font-medium text-gray-500">
+                  Ranking
+                </span>
+              </div>
+              <p className="text-2xl font-bold text-gray-900">
+                #{rank?.rank || "-"}
+              </p>
+            </Card>
           </div>
-          <p className="text-2xl font-bold text-gray-900">
-            #{rank?.rank || "-"}
-          </p>
-        </Card>
+        </div>
+
+        <div className="flex flex-col gap-4">
+          <Card>
+            {!badges || badges.length === 0 ? (
+              <div className="text-center py-8">
+                <Award size={32} className="mx-auto text-gray-300 mb-3" />
+                <p className="text-sm text-gray-500">
+                  Complete quizzes to earn badges!
+                </p>
+              </div>
+            ) : (
+              <div className="flex flex-col gap-3">
+                {badges.map((ub) => (
+                  <div key={ub.id} className="flex items-center gap-3">
+                    <span className="text-2xl">{ub.badge.icon}</span>
+                    <div>
+                      <p className="text-sm font-medium text-gray-900">
+                        {ub.badge.name}
+                      </p>
+                      <p className="text-xs text-gray-500">
+                        {ub.badge.description}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </Card>
+        </div>
       </div>
 
-      <div className="grid md:grid-cols-3 gap-6">
+      <div className="grid md:grid-cols-3 gap-6 border-2 border-black">
         <div className="md:col-span-2 flex flex-col gap-4">
           <div className="flex items-center justify-between">
             <h2 className="text-lg font-medium text-gray-900">

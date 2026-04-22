@@ -3,10 +3,16 @@ import { HTMLAttributes } from "react";
 
 interface CardProps extends HTMLAttributes<HTMLDivElement> {
   padding?: "sm" | "md" | "lg";
+  bgColor?: string;
+  border?: boolean;
+  borderColor?: string;
 }
 
 export default function Card({
   padding = "md",
+  bgColor = "bg-white",
+  border = true,
+  borderColor = "border-gray-200",
   className,
   children,
   ...props
@@ -14,8 +20,11 @@ export default function Card({
   return (
     <div
       className={clsx(
-        "bg-white rounded-xl border border-gray-200",
+        "rounded-xl",
+        bgColor,
         {
+          border: border,
+          [borderColor]: border,
           "p-4": padding === "sm",
           "p-6": padding === "md",
           "p-8": padding === "lg",
