@@ -10,3 +10,7 @@ apps/web/.env*.local
 # Environment
 .env
 **/.env
+
+PROJECT_DOCS.md
+AGENTS.md
+CLAUDE.md
