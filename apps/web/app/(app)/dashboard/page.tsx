@@ -15,6 +15,7 @@ import {
   ChevronRight,
   TrendingUp,
 } from "lucide-react";
+import CourseProgressChart from "@/components/dashboard/CourseProgressChart";
 
 export default function DashboardPage() {
   const { user } = useAuthStore();
@@ -204,10 +205,12 @@ export default function DashboardPage() {
         <div className="flex flex-col gap-6">
           <div className="flex flex-col bg-white border border-gray-200 rounded-xl p-4">
             <h3 className="text-gray-900 text-lg font-medium pb-2 -mt-1">
-              Progress Status
+              Courses' Progress Status
             </h3>
-            <Card bgColor="bg-slate-100" border={false} className="h-[250px]">
-              <div></div>
+            <Card bgColor="bg-slate-100" border={false}>
+              <CourseProgressChart
+                courseProgresses={dashboard?.course_progresses}
+              />
             </Card>
           </div>
 
