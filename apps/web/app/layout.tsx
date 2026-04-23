@@ -7,6 +7,8 @@ const calSans = Cal_Sans({
   weight: "400",
   variable: "--font-cal-sans",
   subsets: ["latin"],
+  adjustFontFallback: false,
+  fallback: ["sans-serif"],
 });
 
 export const metadata: Metadata = {
