@@ -1,12 +1,6 @@
-import {
-  Award,
-  CheckCircle,
-  XCircle,
-  Calendar,
-  User,
-  BookOpen,
-} from "lucide-react";
 import Card from "@/components/ui/card";
+import VerifyStatus from "@/components/verify/VerifyStatus";
+import CertificateDetail from "@/components/verify/CertificateDetail";
 
 async function getCertificate(id: string) {
   try {
@@ -39,96 +33,8 @@ export default async function VerifyPage({
         </div>
 
         <Card padding="lg" className="flex flex-col gap-6">
-          <div className="text-center">
-            {isValid ? (
-              <>
-                <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                  <CheckCircle size={32} className="text-green-600" />
-                </div>
-                <h2 className="text-lg font-medium text-green-700">
-                  Valid Certificate
-                </h2>
-                <p className="text-sm text-gray-500 mt-1">
-                  This certificate is authentic and issued by Schomora
-                </p>
-              </>
-            ) : (
-              <>
-                <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                  <XCircle size={32} className="text-red-600" />
-                </div>
-                <h2 className="text-lg font-medium text-red-700">
-                  Invalid Certificate
-                </h2>
-                <p className="text-sm text-gray-500 mt-1">
-                  This certificate was not found or is invalid
-                </p>
-              </>
-            )}
-          </div>
-
-          {isValid && cert && (
-            <div className="flex flex-col gap-3 bg-gray-50 rounded-lg p-4">
-              <div className="flex items-center gap-3">
-                <div className="w-8 h-8 bg-slate-200 rounded-lg flex items-center justify-center shrink-0">
-                  <Award size={16} className="text-primary" />
-                </div>
-                <div>
-                  <p className="text-xs text-gray-500">Certificate</p>
-                  <p className="text-sm font-medium text-gray-900">
-                    Certificate of Completion
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex items-center gap-3">
-                <div className="w-8 h-8 bg-slate-200 rounded-lg flex items-center justify-center shrink-0">
-                  <User size={16} className="text-primary" />
-                </div>
-                <div>
-                  <p className="text-xs text-gray-500">Awarded to</p>
-                  <p className="text-sm font-medium text-gray-900">
-                    {cert.user?.name}
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex items-center gap-3">
-                <div className="w-8 h-8 bg-slate-200 rounded-lg flex items-center justify-center shrink-0">
-                  <BookOpen size={16} className="text-primary" />
-                </div>
-                <div>
-                  <p className="text-xs text-gray-500">Course</p>
-                  <p className="text-sm font-medium text-gray-900">
-                    {cert.course?.title}
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex items-center gap-3">
-                <div className="w-8 h-8 bg-slate-200 rounded-lg flex items-center justify-center shrink-0">
-                  <Calendar size={16} className="text-primary" />
-                </div>
-                <div>
-                  <p className="text-xs text-gray-500">Issued on</p>
-                  <p className="text-sm font-medium text-gray-900">
-                    {new Date(cert.issued_at).toLocaleDateString("en-US", {
-                      day: "numeric",
-                      month: "long",
-                      year: "numeric",
-                    })}
-                  </p>
-                </div>
-              </div>
-
-              <div className="pt-2 border-t border-gray-200">
-                <p className="text-xs text-gray-400">Certificate ID</p>
-                <p className="text-xs font-mono text-gray-600 break-all">
-                  {cert.id}
-                </p>
-              </div>
-            </div>
-          )}
+          <VerifyStatus isValid={isValid} />
+          {isValid && cert && <CertificateDetail certificate={cert} />}
         </Card>
 
         <p className="text-center text-xs text-gray-400">
