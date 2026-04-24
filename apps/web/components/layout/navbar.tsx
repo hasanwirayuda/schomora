@@ -1,5 +1,6 @@
 "use client";
 
+import { useQueryClient } from "@tanstack/react-query";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useAuthStore } from "@/lib/store/auth";
@@ -17,7 +18,10 @@ export default function Navbar() {
   const { user, logout } = useAuthStore();
   const router = useRouter();
 
+  const queryClient = useQueryClient();
+
   const handleLogout = () => {
+    queryClient.clear();
     logout();
     router.push("/login");
   };
