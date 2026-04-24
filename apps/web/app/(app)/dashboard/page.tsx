@@ -67,15 +67,17 @@ export default function DashboardPage() {
                 bgColor="bg-slate-100"
                 border={false}
               >
-                <div className="flex items-center gap-2 text-primary">
-                  <BookOpen size={16} />
+                <div className="bg-slate-200 w-fit p-1.5 rounded-md">
+                  <BookOpen size={16} className="text-primary" />
+                </div>
+                <div className="flex items-center justify-between">
                   <span className="text-xs font-medium text-gray-500">
                     Courses enrolled
                   </span>
+                  <p className="text-lg font-medium text-primary">
+                    {dashboard?.total_enrolled || 0}
+                  </p>
                 </div>
-                <p className="text-2xl font-bold text-gray-900">
-                  {dashboard?.total_enrolled || 0}
-                </p>
               </Card>
 
               <Card
@@ -84,15 +86,17 @@ export default function DashboardPage() {
                 bgColor="bg-slate-100"
                 border={false}
               >
-                <div className="flex items-center gap-2 text-green-600">
-                  <TrendingUp size={16} />
+                <div className="bg-slate-200 w-fit p-1.5 rounded-md">
+                  <TrendingUp size={16} className="text-primary" />
+                </div>
+                <div className="flex items-center justify-between">
                   <span className="text-xs font-medium text-gray-500">
                     Courses completed
                   </span>
+                  <p className="text-lg font-medium text-primary">
+                    {dashboard?.total_completed || 0}
+                  </p>
                 </div>
-                <p className="text-2xl font-bold text-gray-900">
-                  {dashboard?.total_completed || 0}
-                </p>
               </Card>
 
               <Card
@@ -101,15 +105,17 @@ export default function DashboardPage() {
                 bgColor="bg-slate-100"
                 border={false}
               >
-                <div className="flex items-center gap-2 text-amber-600">
-                  <Zap size={16} />
+                <div className="bg-slate-200 w-fit p-1.5 rounded-md">
+                  <Zap size={16} className="text-primary" />
+                </div>
+                <div className="flex items-center justify-between">
                   <span className="text-xs font-medium text-gray-500">
                     Total XP
                   </span>
+                  <p className="text-lg font-medium text-primary">
+                    {rank?.xp || 0}
+                  </p>
                 </div>
-                <p className="text-2xl font-bold text-gray-900">
-                  {rank?.xp || 0}
-                </p>
               </Card>
 
               <Card
@@ -118,15 +124,17 @@ export default function DashboardPage() {
                 bgColor="bg-slate-100"
                 border={false}
               >
-                <div className="flex items-center gap-2 text-purple-600">
-                  <Trophy size={16} />
+                <div className="bg-slate-200 w-fit p-1.5 rounded-md">
+                  <Trophy size={16} className="text-primary" />
+                </div>
+                <div className="flex items-center justify-between">
                   <span className="text-xs font-medium text-gray-500">
                     Ranking
                   </span>
+                  <p className="text-lg font-medium text-primary">
+                    #{rank?.rank || "-"}
+                  </p>
                 </div>
-                <p className="text-2xl font-bold text-gray-900">
-                  #{rank?.rank || "-"}
-                </p>
               </Card>
             </div>
           </div>
