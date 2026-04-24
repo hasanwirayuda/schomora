@@ -15,8 +15,8 @@ func RegisterRoutes(r *gin.Engine, h *Handler, authMiddleware gin.HandlerFunc) {
     protected.Use(authMiddleware)
     {
         // Question (teacher only — enforced di service)
-        protected.POST("/courses/:id/questions", h.CreateQuestion)
-        protected.GET("/courses/:id/questions", h.GetQuestionsByCourse)
+        protected.POST("/modules/:id/questions", h.CreateQuestion)
+        protected.GET("/modules/:id/questions", h.GetQuestionsByModule)
         protected.DELETE("/questions/:id", h.DeleteQuestion)
 
         // Quiz (teacher only — enforced di service)

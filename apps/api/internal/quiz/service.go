@@ -42,8 +42,8 @@ type SubmitQuizInput struct {
 
 type Service interface {
     // Question
-    CreateQuestion(courseID string, input CreateQuestionInput, userID uuid.UUID) (*models.Question, error)
-    GetQuestionsByCourse(courseID string) ([]models.Question, error)
+    CreateQuestion(moduleID string, input CreateQuestionInput, userID uuid.UUID) (*models.Question, error)
+    GetQuestionsByModule(moduleID string) ([]models.Question, error)
     DeleteQuestion(questionID string, userID uuid.UUID) error
 
     // Quiz
@@ -77,8 +77,13 @@ func NewService(
     return &service{repo, courseRepo, moduleRepo, xpAwarder}
 }
 
-func (s *service) CreateQuestion(courseID string, input CreateQuestionInput, userID uuid.UUID) (*models.Question, error) {
-    course, err := s.courseRepo.FindCourseByID(courseID)
+func (s *service) CreateQuestion(moduleID string, input CreateQuestionInput, userID uuid.UUID) (*models.Question, error) {
+    module, err := s.moduleRepo.FindModuleByID(moduleID)
+    if err != nil {
+        return nil, errors.New("module not found")
+    }
+
+    course, err := s.courseRepo.FindCourseByID(module.CourseID.String())
     if err != nil {
         return nil, errors.New("course not found")
     }
@@ -87,13 +92,18 @@ func (s *service) CreateQuestion(courseID string, input CreateQuestionInput, use
         return nil, errors.New("unauthorized: only the course author can add questions")
     }
 
+    quiz, err := s.repo.FindQuizByModuleID(moduleID)
+    if err != nil {
+        return nil, errors.New("quiz not found for this module — create a quiz first")
+    }
+
     optionsJSON, err := json.Marshal(input.Options)
     if err != nil {
         return nil, errors.New("invalid options format")
     }
 
     question := &models.Question{
-        CourseID:    course.ID,
+        QuizID:      quiz.ID,
         TopicTag:    input.TopicTag,
         Difficulty:  input.Difficulty,
         Type:        models.QuestionType(input.Type),
@@ -109,8 +119,12 @@ func (s *service) CreateQuestion(courseID string, input CreateQuestionInput, use
     return question, nil
 }
 
-func (s *service) GetQuestionsByCourse(courseID string) ([]models.Question, error) {
-    return s.repo.FindQuestionsByCourseID(courseID)
+func (s *service) GetQuestionsByModule(moduleID string) ([]models.Question, error) {
+    quiz, err := s.repo.FindQuizByModuleID(moduleID)
+    if err != nil {
+        return nil, errors.New("quiz not found for this module")
+    }
+    return s.repo.FindQuestionsByQuizID(quiz.ID.String())
 }
 
 func (s *service) DeleteQuestion(questionID string, userID uuid.UUID) error {
@@ -119,7 +133,17 @@ func (s *service) DeleteQuestion(questionID string, userID uuid.UUID) error {
         return errors.New("question not found")
     }
 
-    course, err := s.courseRepo.FindCourseByID(question.CourseID.String())
+    quiz, err := s.repo.FindQuizByID(question.QuizID.String())
+    if err != nil {
+        return errors.New("quiz not found")
+    }
+
+    module, err := s.moduleRepo.FindModuleByID(quiz.ModuleID.String())
+    if err != nil {
+        return errors.New("module not found")
+    }
+
+    course, err := s.courseRepo.FindCourseByID(module.CourseID.String())
     if err != nil {
         return errors.New("course not found")
     }
@@ -181,13 +205,9 @@ func (s *service) StartQuiz(quizID string, userID uuid.UUID) (*models.QuizAttemp
         return nil, nil, errors.New("quiz not found")
     }
 
-    // Ambil semua soal dari course yang terkait modul ini
-    module, err := s.moduleRepo.FindModuleByID(quiz.ModuleID.String())
-    if err != nil {
-        return nil, nil, errors.New("module not found")
-    }
+    _ = quiz
 
-    questions, err := s.repo.FindQuestionsByCourseID(module.CourseID.String())
+    questions, err := s.repo.FindQuestionsByQuizID(quizID)
     if err != nil || len(questions) == 0 {
         return nil, nil, errors.New("no questions available for this quiz")
     }
@@ -220,18 +240,11 @@ func (s *service) SubmitQuiz(attemptID string, input SubmitQuizInput, userID uui
         return nil, errors.New("this attempt has already been submitted")
     }
 
-    // Ambil soal untuk validasi jawaban
-    module, err := s.moduleRepo.FindModuleByID(attempt.Quiz.ModuleID.String())
-    if err != nil {
-        return nil, errors.New("module not found")
-    }
-
-    questions, err := s.repo.FindQuestionsByCourseID(module.CourseID.String())
+    questions, err := s.repo.FindQuestionsByQuizID(attempt.QuizID.String())
     if err != nil {
         return nil, errors.New("failed to load questions")
     }
 
-    // Map question by ID untuk lookup cepat
     questionMap := make(map[string]models.Question)
     for _, q := range questions {
         questionMap[q.ID.String()] = q

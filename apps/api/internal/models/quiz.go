@@ -16,8 +16,8 @@ const (
 
 type Question struct {
     ID          uuid.UUID      `json:"id" gorm:"type:uuid;primaryKey"`
-    CourseID    uuid.UUID      `json:"course_id" gorm:"type:uuid;not null"`
-    Course      Course         `json:"-" gorm:"foreignKey:CourseID"`
+    QuizID      uuid.UUID      `json:"quiz_id" gorm:"type:uuid;not null"`
+    Quiz        Quiz           `json:"-" gorm:"foreignKey:QuizID"`
     TopicTag    string         `json:"topic_tag" gorm:"not null"`
     Difficulty  float64        `json:"difficulty" gorm:"not null;default:0.5"`
     Type        QuestionType   `json:"type" gorm:"type:varchar(20);not null"`

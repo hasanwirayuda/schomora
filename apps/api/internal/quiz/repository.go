@@ -9,7 +9,7 @@ import (
 type Repository interface {
     // Question
     CreateQuestion(q *models.Question) error
-    FindQuestionsByCourseID(courseID string) ([]models.Question, error)
+    FindQuestionsByQuizID(quizID string) ([]models.Question, error)
     FindQuestionByID(id string) (*models.Question, error)
     DeleteQuestion(id string) error
 
@@ -41,9 +41,9 @@ func (r *repository) CreateQuestion(q *models.Question) error {
     return r.db.Create(q).Error
 }
 
-func (r *repository) FindQuestionsByCourseID(courseID string) ([]models.Question, error) {
+func (r *repository) FindQuestionsByQuizID(quizID string) ([]models.Question, error) {
     var questions []models.Question
-    err := r.db.Where("course_id = ?", courseID).Find(&questions).Error
+    err := r.db.Where("quiz_id = ?", quizID).Find(&questions).Error
     return questions, err
 }
 

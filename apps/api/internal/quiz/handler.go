@@ -21,7 +21,7 @@ func currentUser(c *gin.Context) *models.User {
 }
 
 func (h *Handler) CreateQuestion(c *gin.Context) {
-    courseID := c.Param("id")
+    moduleID := c.Param("id")
     var input CreateQuestionInput
     if err := c.ShouldBindJSON(&input); err != nil {
         c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -29,7 +29,7 @@ func (h *Handler) CreateQuestion(c *gin.Context) {
     }
 
     user := currentUser(c)
-    question, err := h.service.CreateQuestion(courseID, input, user.ID)
+    question, err := h.service.CreateQuestion(moduleID, input, user.ID)
     if err != nil {
         c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
         return
@@ -38,9 +38,9 @@ func (h *Handler) CreateQuestion(c *gin.Context) {
     c.JSON(http.StatusCreated, question)
 }
 
-func (h *Handler) GetQuestionsByCourse(c *gin.Context) {
-    courseID := c.Param("id")
-    questions, err := h.service.GetQuestionsByCourse(courseID)
+func (h *Handler) GetQuestionsByModule(c *gin.Context) {
+    moduleID := c.Param("id")
+    questions, err := h.service.GetQuestionsByModule(moduleID)
     if err != nil {
         c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
         return
