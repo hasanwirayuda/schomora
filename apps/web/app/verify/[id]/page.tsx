@@ -70,8 +70,8 @@ export default async function VerifyPage({
           {isValid && cert && (
             <div className="flex flex-col gap-3 bg-gray-50 rounded-lg p-4">
               <div className="flex items-center gap-3">
-                <div className="w-8 h-8 bg-amber-100 rounded-lg flex items-center justify-center shrink-0">
-                  <Award size={16} className="text-amber-600" />
+                <div className="w-8 h-8 bg-slate-200 rounded-lg flex items-center justify-center shrink-0">
+                  <Award size={16} className="text-primary" />
                 </div>
                 <div>
                   <p className="text-xs text-gray-500">Certificate</p>
@@ -82,7 +82,7 @@ export default async function VerifyPage({
               </div>
 
               <div className="flex items-center gap-3">
-                <div className="w-8 h-8 bg-indigo-100 rounded-lg flex items-center justify-center shrink-0">
+                <div className="w-8 h-8 bg-slate-200 rounded-lg flex items-center justify-center shrink-0">
                   <User size={16} className="text-primary" />
                 </div>
                 <div>
@@ -94,8 +94,8 @@ export default async function VerifyPage({
               </div>
 
               <div className="flex items-center gap-3">
-                <div className="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center shrink-0">
-                  <BookOpen size={16} className="text-purple-600" />
+                <div className="w-8 h-8 bg-slate-200 rounded-lg flex items-center justify-center shrink-0">
+                  <BookOpen size={16} className="text-primary" />
                 </div>
                 <div>
                   <p className="text-xs text-gray-500">Course</p>
@@ -106,8 +106,8 @@ export default async function VerifyPage({
               </div>
 
               <div className="flex items-center gap-3">
-                <div className="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center shrink-0">
-                  <Calendar size={16} className="text-green-600" />
+                <div className="w-8 h-8 bg-slate-200 rounded-lg flex items-center justify-center shrink-0">
+                  <Calendar size={16} className="text-primary" />
                 </div>
                 <div>
                   <p className="text-xs text-gray-500">Issued on</p>
