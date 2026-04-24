@@ -1,17 +1,21 @@
 "use client";
 
+import { useState, useMemo } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { courseApi } from "@/lib/api/course";
 import { useAuthStore } from "@/lib/store/auth";
 import { Course } from "@/lib/types";
 import Card from "@/components/ui/card";
 import Button from "@/components/ui/button";
+import CourseFilters from "@/components/courses/CourseFilters";
 import Link from "next/link";
-import { BookOpen, Users, ChevronRight } from "lucide-react";
+import { BookOpen, ChevronRight } from "lucide-react";
 
 export default function CoursesPage() {
   const { user } = useAuthStore();
   const queryClient = useQueryClient();
+  const [search, setSearch] = useState("");
+  const [sortBy, setSortBy] = useState("default");
 
   const { data: courses, isLoading } = useQuery({
     queryKey: ["courses"],
@@ -33,6 +37,32 @@ export default function CoursesPage() {
     },
   });
 
+  const filteredCourses = useMemo(() => {
+    if (!courses) return [];
+
+    let result = [...courses];
+
+    if (search.trim()) {
+      result = result.filter((course) =>
+        course.title.toLowerCase().includes(search.toLowerCase()),
+      );
+    }
+
+    if (sortBy === "newest") {
+      result.sort(
+        (a, b) =>
+          new Date(b.created_at).getTime() - new Date(a.created_at).getTime(),
+      );
+    } else if (sortBy === "oldest") {
+      result.sort(
+        (a, b) =>
+          new Date(a.created_at).getTime() - new Date(b.created_at).getTime(),
+      );
+    }
+
+    return result;
+  }, [courses, search, sortBy]);
+
   if (isLoading) {
     return (
       <div className="flex items-center justify-center h-64">
@@ -43,11 +73,20 @@ export default function CoursesPage() {
 
   return (
     <div className="flex flex-col gap-6">
-      <div>
-        <h1 className="text-2xl font-medium text-gray-900">Browse Courses</h1>
-        <p className="text-gray-500 mt-1">
-          Find courses that match your interests
-        </p>
+      <div className="flex justify-between items-end">
+        <div>
+          <h1 className="text-2xl font-medium text-gray-900">Browse Courses</h1>
+          <p className="text-gray-500 mt-1">
+            Find courses that match your interests
+          </p>
+        </div>
+
+        <CourseFilters
+          search={search}
+          sortBy={sortBy}
+          onSearchChange={setSearch}
+          onSortChange={setSortBy}
+        />
       </div>
 
       {!courses || courses.length === 0 ? (
@@ -55,9 +94,14 @@ export default function CoursesPage() {
           <BookOpen size={40} className="mx-auto text-gray-300 mb-4" />
           <p className="text-gray-500">No courses available yet</p>
         </Card>
+      ) : filteredCourses.length === 0 ? (
+        <Card className="text-center py-16">
+          <BookOpen size={40} className="mx-auto text-gray-300 mb-4" />
+          <p className="text-gray-500">No courses match your search</p>
+        </Card>
       ) : (
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {courses.map((course: Course) => {
+          {filteredCourses.map((course: Course) => {
             const isEnrolled = enrolledCourseIDs.has(course.id);
             const isOwner = course.author_id === user?.id;
 
