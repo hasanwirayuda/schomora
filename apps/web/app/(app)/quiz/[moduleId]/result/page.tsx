@@ -1,20 +1,14 @@
 "use client";
 
+import { Suspense } from "react";
 import { useSearchParams, useParams, useRouter } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
-import { Suspense } from "react";
 import Link from "next/link";
+import { RotateCcw, Trophy } from "lucide-react";
 import { quizApi } from "@/lib/api/quiz";
-import Card from "@/components/ui/card";
 import Button from "@/components/ui/button";
-import {
-  CheckCircle2,
-  XCircle,
-  Trophy,
-  RotateCcw,
-  ArrowLeft,
-  Zap,
-} from "lucide-react";
+import QuizResultSummary from "@/components/quiz/QuizResultSummary";
+import QuizAnswerReview from "@/components/quiz/QuizAnswerReview";
 
 function ResultContent() {
   const { moduleId } = useParams<{ moduleId: string }>();
@@ -37,104 +31,19 @@ function ResultContent() {
   }
 
   const score = Math.round(attempt.score);
-  const isPassing = score >= 70;
-  const correctCount = attempt.answers?.filter((a) => a.is_correct).length || 0;
-  const totalCount = attempt.answers?.length || 0;
+  const answers = attempt.answers ?? [];
+  const correctCount = answers.filter((a) => a.is_correct).length;
 
   return (
     <div className="max-w-2xl mx-auto flex flex-col gap-6">
-      <Card padding="lg" className="text-center">
-        <div
-          className={`w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-4 ${
-            isPassing ? "bg-green-100" : "bg-red-100"
-          }`}
-        >
-          <span
-            className={`text-3xl font-bold ${
-              isPassing ? "text-green-600" : "text-red-600"
-            }`}
-          >
-            {score}%
-          </span>
-        </div>
+      <QuizResultSummary
+        score={score}
+        correctCount={correctCount}
+        totalCount={answers.length}
+        abilityEstimate={attempt.ability_estimate}
+      />
 
-        <h1 className="text-xl font-medium text-gray-900 mb-1">
-          {isPassing ? "Congratulations! 🎉" : "Try again!"}
-        </h1>
-        <p className="text-gray-500 text-sm">
-          {isPassing
-            ? "You have successfully completed this quiz"
-            : "You haven't reached the 70% passing score. Don't give up!"}
-        </p>
-
-        <div className="grid grid-cols-3 gap-4 mt-6">
-          <div className="bg-gray-50 rounded-lg p-3">
-            <p className="text-2xl font-bold text-gray-900">{correctCount}</p>
-            <p className="text-xs text-gray-500">Correct</p>
-          </div>
-          <div className="bg-gray-50 rounded-lg p-3">
-            <p className="text-2xl font-bold text-gray-900">
-              {totalCount - correctCount}
-            </p>
-            <p className="text-xs text-gray-500">Incorrect</p>
-          </div>
-          <div className="bg-gray-50 rounded-lg p-3">
-            <p className="text-2xl font-bold text-amber-600">
-              +{isPassing ? (score === 100 ? 50 : 25) : 10} XP
-            </p>
-            <p className="text-xs text-gray-500">XP earned</p>
-          </div>
-        </div>
-
-        <div className="mt-4 p-3 bg-indigo-50 rounded-lg">
-          <div className="flex items-center justify-between mb-1">
-            <p className="text-xs text-indigo-700 font-medium flex items-center gap-1">
-              <Zap size={12} /> Ability estimate
-            </p>
-            <p className="text-xs font-bold text-indigo-700">
-              {Math.round(attempt.ability_estimate * 100)}%
-            </p>
-          </div>
-          <div className="w-full bg-indigo-100 rounded-full h-1.5">
-            <div
-              className="bg-primary h-1.5 rounded-full transition-all"
-              style={{ width: `${attempt.ability_estimate * 100}%` }}
-            />
-          </div>
-          <p className="text-xs text-indigo-500 mt-1">
-            The next questions will be adjusted to your ability
-          </p>
-        </div>
-      </Card>
-
-      {attempt.answers && attempt.answers.length > 0 && (
-        <div className="flex flex-col gap-3">
-          <h2 className="text-lg font-medium text-gray-900">Review answers</h2>
-          {attempt.answers.map((answer, index) => (
-            <Card key={answer.id} padding="sm">
-              <div className="flex items-start gap-3">
-                <div className="shrink-0 mt-0.5">
-                  {answer.is_correct ? (
-                    <CheckCircle2 size={18} className="text-green-500" />
-                  ) : (
-                    <XCircle size={18} className="text-red-500" />
-                  )}
-                </div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium text-gray-900 mb-2">
-                    {index + 1}. {answer.question?.body}
-                  </p>
-                  {answer.question?.explanation && !answer.is_correct && (
-                    <p className="text-xs text-gray-500 bg-amber-50 border border-amber-100 rounded p-2">
-                      💡 {answer.question.explanation}
-                    </p>
-                  )}
-                </div>
-              </div>
-            </Card>
-          ))}
-        </div>
-      )}
+      <QuizAnswerReview answers={answers} />
 
       <div className="flex gap-3">
         <Button
