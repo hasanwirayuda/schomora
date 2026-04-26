@@ -94,7 +94,7 @@ func GeneratePDF(data CertificateData) ([]byte, error) {
     pdf.SetFont("Arial", "I", 9)
     pdf.SetTextColor(150, 150, 150)
     pdf.SetY(165)
-    pdf.CellFormat(297, 6, fmt.Sprintf("Verify at: schomora.com/verify/%s", data.ID), "", 1, "C", false, 0, "")
+    pdf.CellFormat(297, 6, fmt.Sprintf("Verify at: schomora.vercel.app/verify/%s", data.ID), "", 1, "C", false, 0, "")
 
     // Export ke bytes
     var buf bytes.Buffer
