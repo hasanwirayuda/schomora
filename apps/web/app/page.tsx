@@ -10,8 +10,12 @@ export default function HomePage() {
       />
 
       <header className="absolute top-8 w-full px-6 flex justify-center">
-        <nav className="w-full max-w-6xl flex items-center justify-between px-6 py-4.5 rounded-full border border-white/20 bg-white/2 backdrop-blur-xs shadow-lg">
-          <h1 className="text-lg text-white">@ Schomora</h1>
+        <nav className="w-full max-w-6xl flex items-center justify-between px-5.5 py-4 rounded-full border border-white/20 bg-white/2 backdrop-blur-xs shadow-lg">
+          <img
+            src="/logo.svg"
+            alt="logo"
+            className="size-10 cursor-pointer shadow-lg shadow-black/30 rounded-xl"
+          />
           <button className="flex items-center cursor-pointer gap-2 px-4 py-1.5 rounded-full border border-white/20 bg-white/5 text-white text-sm hover:bg-white/15 transition-all">
             <Globe size={14} /> EN
           </button>
