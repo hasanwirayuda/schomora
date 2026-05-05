@@ -20,6 +20,7 @@ type User struct {
     Name         string         `json:"name" gorm:"not null"`
     Email        string         `json:"email" gorm:"uniqueIndex;not null"`
     PasswordHash string         `json:"-" gorm:"not null"`
+    AvatarURL    string         `json:"avatar_url" gorm:"default:''"`
     Role         Role           `json:"role" gorm:"type:varchar(20);default:'student'"`
     XPTotal      int            `json:"xp_total" gorm:"default:0"`
     StreakDays   int            `json:"streak_days" gorm:"default:0"`

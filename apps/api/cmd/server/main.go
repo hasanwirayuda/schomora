@@ -12,6 +12,7 @@ import (
 	"github.com/hasanwirayuda/schomora/api/internal/enrollment"
 	"github.com/hasanwirayuda/schomora/api/internal/gamification"
 	"github.com/hasanwirayuda/schomora/api/internal/models"
+	"github.com/hasanwirayuda/schomora/api/internal/profile"
 	"github.com/hasanwirayuda/schomora/api/internal/progress"
 	"github.com/hasanwirayuda/schomora/api/internal/quiz"
 	"github.com/hasanwirayuda/schomora/api/pkg/database"
@@ -114,6 +115,12 @@ func main() {
     )
     certHandler := certificate.NewHandler(certService)
     certificate.RegisterRoutes(r, certHandler, authMiddleware)
+
+    // Profile
+    profileRepo := profile.NewRepository(database.DB)
+    profileService := profile.NewService(profileRepo)
+    profileHandler := profile.NewHandler(profileService)
+    profile.RegisterRoutes(r, profileHandler, authMiddleware)
 
     port := os.Getenv("PORT")
     if port == "" {
