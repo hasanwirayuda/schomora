@@ -67,7 +67,7 @@ export default function CertificateCard({
           rel="noopener noreferrer"
           className="flex-1"
         >
-          <Button variant="secondary" size="sm" className="w-full">
+          <Button size="sm" className="w-full">
             <ExternalLink size={14} /> Verify
           </Button>
         </a>
