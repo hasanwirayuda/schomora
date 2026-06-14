@@ -17,6 +17,7 @@ export const metadata: Metadata = {
   description:
     "Belajar lebih cerdas dengan quiz adaptif yang menyesuaikan kemampuanmu",
   manifest: "/manifest.json",
+  themeColor: "#ffffff",
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
