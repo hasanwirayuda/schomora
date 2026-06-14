@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Cal_Sans } from "next/font/google";
 import "./globals.css";
 import QueryProvider from "@/providers/query-provider";
+import ServiceWorkerRegister from "@/components/pwa/ServiceWorkerRegister";
 
 const calSans = Cal_Sans({
   weight: "400",
@@ -31,6 +32,7 @@ export default function RootLayout({
   return (
     <html lang="id" className={calSans.variable}>
       <body className="antialiased">
+        <ServiceWorkerRegister />
         <QueryProvider>{children}</QueryProvider>
       </body>
     </html>
