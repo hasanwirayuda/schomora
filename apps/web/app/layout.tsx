@@ -15,6 +15,12 @@ export const metadata: Metadata = {
   title: "Schomora — Adaptive Learning Platform",
   description:
     "Belajar lebih cerdas dengan quiz adaptif yang menyesuaikan kemampuanmu",
+  manifest: "/manifest.json",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "Schomora",
+  },
 };
 
 export default function RootLayout({
